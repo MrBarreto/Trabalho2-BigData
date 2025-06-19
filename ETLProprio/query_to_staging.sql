@@ -26,6 +26,15 @@ WHERE rsv.ID_RESERVA IN (
     FROM locacoes_do_dia
 );
 
+CREATE TEMP TABLE clientesPJ_do_dia AS
+SELECT DISTINCT 
+    ID_PJ
+FROM public.PF PF 
+WHERE PF.ID_PF IN (
+    SELECT ID_PF
+    FROM locacoes_do_dia
+)
+
 --Adicionando as locacoes das últimas 24h para dentro da tabela de staging
 INSERT INTO LOCACAO_Staging (
     ID_LOCACAO,
@@ -94,7 +103,7 @@ WHERE ev.ID_ESTADO_VEICULO IN (
     SELECT ID_ESTADO_VEICULO_Devolucao FROM locacoes_do_dia
 );
 
---Sellecioando as linhas de veiculos que apareceram no ultimo dia.
+--Selecioando as linhas de veiculos que apareceram no ultimo dia.
 INSERT INTO VEICULO_Staging (
     ID_VEICULO,
     Placa,
@@ -129,6 +138,7 @@ WHERE vei.ID_VEICULO IN (
     SELECT ID_VEICULO
     FROM carros_do_dia
 );
+
 -- Adicionando seguros ao Staging
 INSERT INTO SEGUROS_Staging(
     ID_SEGUROS,
@@ -145,4 +155,52 @@ FROM public.SEGUROS seg
 WHERE seg.ID_SEGUROS IN (
     SELECT ID_SEGUROS
     FROM locacoes_do_dia
+);
+
+-- Adicionando PFs ao Staging
+INSERT INTO PF_Staging (
+    ID_PF,
+    Nome ,
+    CPF,
+    CNH,
+    Categoria_CNH,
+    Endereco,
+    Nacionalidade,
+    Data_Nascimento,
+    Data_Expedicao_CNH,
+    ID_PJ
+)
+SELECT 
+    ID_PF,
+    Nome,
+    CPF,
+    CNH,
+    Categoria_CNH,
+    Endereco,
+    Nacionalidade,
+    Data_Nascimento,
+    Data_Expedicao_CNH,
+    ID_PJ
+FROM public.PF PF 
+WHERE PF.ID_PF IN(
+    SELECT ID_PF
+    FROM locacoes_do_dia
+);
+
+-- Adicionando PJs ao Staging
+INSERT INTO PJ_Staging (
+    ID_PJ,
+    CNPJ,
+    Nome,
+    Endereco
+)
+SELECT 
+    ID_PJ ,
+    CNPJ,
+    Nome,
+    Endereco
+FROM public.PJ PJ 
+WHERE PJ.ID_PJ IN(
+    SELECT ID_PJ
+    FROM clientesPJ_do_dia
 );
