@@ -26,6 +26,7 @@ WHERE rsv.ID_RESERVA IN (
     FROM locacoes_do_dia
 );
 
+-- Criando uma tabela temporaria para armazenar os clientes PJs do dia 
 CREATE TEMP TABLE clientesPJ_do_dia AS
 SELECT DISTINCT 
     ID_PJ
@@ -35,6 +36,7 @@ WHERE PF.ID_PF IN (
     FROM locacoes_do_dia
 );
 
+-- Criando uma tabela tempooraria para armazenar os pátios visitados no ultimo dia 
 CREATE TEMP TABLE Patios_do_dia AS
 SELECT DISTINCT 
     ID_PATIO
@@ -67,10 +69,7 @@ SELECT
     ID_ESTADO_VEICULO_Retirada,
     ID_ESTADO_VEICULO_Devolucao,
     ID_SEGUROS
-FROM public.LOCACAO
-WHERE 
-    Data_Devolucao >= CURRENT_DATE - INTERVAL '1 day'
-    AND Data_Devolucao < CURRENT_DATE;
+FROM locacoes_do_dia;
 
 -- Selecionando as linhas de estado do veiculo que apareceram no ultimo dia e adicionando na tabela de staging
 INSERT INTO ESTADO_VEICULO_Staging (
@@ -92,7 +91,7 @@ INSERT INTO ESTADO_VEICULO_Staging (
 )
 SELECT 
     ID_ESTADO_VEICULO,
-    Pressao_Pneu:FLOAT,
+    Pressao_Pneu::FLOAT,
     Nivel_Oleo,
     Gasolina,
     Quilometragem::FLOAT,
@@ -228,13 +227,13 @@ WHERE VG.ID_VAGAS IN (
     SELECT Vaga_Retirada FROM locacoes_do_dia
     UNION
     SELECT Vaga_Devolucao FROM locacoes_do_dia
-)
+);
 
 -- Adicionando Patios
 INSERT INTO PATIO_Staging (
     ID_PATIO,
     ID_PJ,
-    Endereco,
+    Endereco
 )
 SELECT
     ID_PATIO,
@@ -242,6 +241,6 @@ SELECT
     Endereco,
 FROM public.PATIO PT 
 WHERE PT.ID_PATIO IN (
-    SELECT *
+    SELECT ID_PATIO
     FROM Patios_do_dia
-)
+);
