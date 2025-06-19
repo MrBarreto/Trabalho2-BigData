@@ -124,3 +124,5 @@ SELECT DISTINCT
 FROM PF_Staging PF
 LEFT JOIN PJ_Staging PJ ON PF.ID_PJ = PJ.ID_PJ
 ON CONFLICT (ID_Pessoa) DO NOTHING;
+
+-- Inserindo na Tabela FatoLocacao

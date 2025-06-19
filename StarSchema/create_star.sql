@@ -82,6 +82,7 @@ CREATE TABLE FatoLocacao (
     ID_ESTADO_VEICULO_Devolucao INT NOT NULL,
     ID_SEGUROS INT,
     ID_EMPRESA_Dona INT NOT NULL,
+    ID_VEICULO INT NOT NULL,
     
     CONSTRAINT FK_Locacao_Vaga_Retirada FOREIGN KEY (Vaga_Retirada)
         REFERENCES DimVaga(ID_Vaga)
@@ -115,6 +116,11 @@ CREATE TABLE FatoLocacao (
 
     CONSTRAINT FK_Locacao_Empresa FOREIGN KEY (ID_EMPRESA_Dona)
         REFERENCES DimEmpresa_Dona(ID_Empresa_Dona)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
+    
+    CONSTRAINT FK_Locacao_Veiculo FOREIGN KEY (ID_VEICULO)
+        REFERENCES DimVeiculo(ID_VEICULO)
         ON DELETE RESTRICT
         ON UPDATE CASCADE
 );
