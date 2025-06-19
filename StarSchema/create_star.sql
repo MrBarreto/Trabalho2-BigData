@@ -1,12 +1,12 @@
 CREATE TABLE DimEmpresa_Dona (
-    ID_Empresa_Dona SERIAL PRIMARY KEY,
+    ID_Empresa_Dona PRIMARY KEY,
     CNPJ_Empresa VARCHAR(18) UNIQUE NOT NULL,
     Nome_Empresa VARCHAR(255) NOT NULL,
     Endereco_Empresa VARCHAR(255)
 );
 
 CREATE TABLE DimVeiculo (
-    ID_VEICULO SERIAL PRIMARY KEY,
+    ID_VEICULO PRIMARY KEY,
     Placa VARCHAR(10) UNIQUE NOT NULL,
     Chassi VARCHAR(17) UNIQUE NOT NULL,
     Grupo VARCHAR(50),
@@ -21,7 +21,7 @@ CREATE TABLE DimVeiculo (
 );
 
 CREATE TABLE DimEstado_Veiculo (
-    ID_ESTADO_VEICULO SERIAL PRIMARY KEY,
+    ID_ESTADO_VEICULO PRIMARY KEY,
     Pressao_Pneu FLOAT,
     Nivel_Oleo VARCHAR(50),
     Gasolina VARCHAR(50),
@@ -39,49 +39,49 @@ CREATE TABLE DimEstado_Veiculo (
 );
 
 CREATE TABLE DimPessoa (
-    ID_Pessoa SERIAL PRIMARY KEY,
+    ID_Pessoa PRIMARY KEY,
     Nome VARCHAR(255) NOT NULL,
-    CPF VARCHAR(14) UNIQUE NOT NULL,
-    CNH VARCHAR(20) UNIQUE NOT NULL,
+    CPF VARCHAR(14) NOT NULL,
+    CNH VARCHAR(20) NOT NULL,
     Categoria_CNH VARCHAR(5),
     Endereco VARCHAR(255),
     Nacionalidade VARCHAR(50),
     Data_Nascimento DATE,
     Data_Expedicao_CNH DATE,
     ID_Empresa INT,
-    Nome_empresa VARCHAR(255) NOT NULL,
-    CNPJ VARCHAR(18) NOT NULL,
+    Nome_empresa VARCHAR(255),
+    CNPJ VARCHAR(18),
     Endereco_Empresa VARCHAR(255)
 );
 
 CREATE TABLE DimSeguro (
-    ID_SEGUROS SERIAL PRIMARY KEY,
+    ID_SEGUROS PRIMARY KEY,
     Vidros VARCHAR(255),
     Farois VARCHAR(255),
     Faixa_Indenizacao VARCHAR(100)
 );
 
 CREATE TABLE DimVaga (
-    ID_Vaga SERIAL PRIMARY KEY,
+    ID_Vaga PRIMARY KEY,
     ID_PATIO INTEGER NOT NULL,
     Endereco_Patio VARCHAR(255) NOT NULL,
-    ID_Empresa INT,
+    ID_Empresa INT NOT NULL,
     CNPJ_Empresa VARCHAR(18) NOT NULL,
     Nome_Empresa VARCHAR(255) NOT NULL,
-    Endereco_Empresa VARCHAR(255)
+    Endereco_Empresa VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE FatoLocacao (
-    ID_LOCACAO SERIAL PRIMARY KEY,
+    ID_LOCACAO PRIMARY KEY,
     Data_Retirada DATE NOT NULL,
-    Data_Devolucao DATE,
-    Vaga_Retirada INT,
-    Vaga_Devolucao INT,
-    ID_Pessoa INT,
-    ID_ESTADO_VEICULO_Retirada INT,
-    ID_ESTADO_VEICULO_Devolucao INT,
+    Data_Devolucao DATE NOT NULL,
+    Vaga_Retirada INT NOT NULL,
+    Vaga_Devolucao INT NOT NULL,
+    ID_Pessoa INT NOT NULL,
+    ID_ESTADO_VEICULO_Retirada INT NOT NULL,
+    ID_ESTADO_VEICULO_Devolucao INT NOT NULL,
     ID_SEGUROS INT,
-    ID_EMPRESA_Dona INT,
+    ID_EMPRESA_Dona INT NOT NULL,
     
     CONSTRAINT FK_Locacao_Vaga_Retirada FOREIGN KEY (Vaga_Retirada)
         REFERENCES DimVaga(ID_Vaga)
