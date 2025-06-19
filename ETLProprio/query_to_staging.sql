@@ -33,7 +33,17 @@ FROM public.PF PF
 WHERE PF.ID_PF IN (
     SELECT ID_PF
     FROM locacoes_do_dia
-)
+);
+
+CREATE TEMP TABLE Patios_do_dia AS
+SELECT DISTINCT 
+    ID_PATIO
+FROM public.VAGAS VG 
+WHERE VG.ID_VAGAS IN (
+    SELECT Vaga_Retirada FROM locacoes_do_dia
+    UNION
+    SELECT Vaga_Devolucao FROM locacoes_do_dia
+);
 
 --Adicionando as locacoes das últimas 24h para dentro da tabela de staging
 INSERT INTO LOCACAO_Staging (
@@ -195,7 +205,7 @@ INSERT INTO PJ_Staging (
     Endereco
 )
 SELECT 
-    ID_PJ ,
+    ID_PJ,
     CNPJ,
     Nome,
     Endereco
@@ -204,3 +214,34 @@ WHERE PJ.ID_PJ IN(
     SELECT ID_PJ
     FROM clientesPJ_do_dia
 );
+
+--Adicionando Vagas
+INSERT INTO VAGAS_Staging (
+    ID_VAGAS,
+    ID_PATIO
+)
+SELECT
+    ID_VAGAS,
+    ID_PATIO
+FROM public.VAGAS VG
+WHERE VG.ID_VAGAS IN (
+    SELECT Vaga_Retirada FROM locacoes_do_dia
+    UNION
+    SELECT Vaga_Devolucao FROM locacoes_do_dia
+)
+
+-- Adicionando Patios
+INSERT INTO PATIO_Staging (
+    ID_PATIO,
+    ID_PJ,
+    Endereco,
+)
+SELECT
+    ID_PATIO,
+    ID_PJ,
+    Endereco,
+FROM public.PATIO PT 
+WHERE PT.ID_PATIO IN (
+    SELECT *
+    FROM Patios_do_dia
+)
