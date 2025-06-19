@@ -244,3 +244,25 @@ WHERE PT.ID_PATIO IN (
     SELECT ID_PATIO
     FROM Patios_do_dia
 );
+
+-- Adicionando Reservas ao Staging
+INSERT INTO RESERVA_Staging (
+    ID_RESERVA,
+    ID_VEICULO,
+    ID_PF,
+    ID_PJ,
+    Data_Inicio,
+    Data_Fim,
+)
+SELECT 
+    ID_RESERVA,
+    ID_VEICULO,
+    ID_PF,
+    ID_PJ,
+    Data_Inicio,
+    Data_Fim,
+FROM public.RESERVA RSV 
+WHERE RSV.ID_RESERVA IN(
+    SELECT ID_RESERVA
+    FROM locacoes_do_dia
+);
