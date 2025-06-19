@@ -147,3 +147,20 @@ FROM LOCACAO_Staging LOC
 JOIN RESERVA_Staging RSV ON LOC.ID_RESERVA = RSV.ID_RESERVA
 JOIN VEICULO_Staging VEC ON RSV.ID_VEICULO = VEC.ID_VEICULO
 ON CONFLICT (ID_LOCACAO) DO NOTHING;
+
+-- Inserindo na Tabela FatoReserva
+INSERT INTO FatoLocacao (
+    ID_RESERVA,
+    ID_Pessoa,
+    ID_VEICULO,
+    Data_Retirada_Prevista,
+    Data_Devolucao_Prevista
+)
+SELECT DISTINCT
+    ID_RESERVA,
+    ID_PF,
+    ID_VEICULO, 
+    Data_Inicio,
+    Data_Fim
+FROM RESERVA_Staging 
+ON CONFLICT (ID_RESERVA) DO NOTHING;

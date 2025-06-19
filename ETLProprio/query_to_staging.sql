@@ -12,19 +12,20 @@ SELECT
     ID_SEGUROS, 
     ID_RESERVA
 FROM public.LOCACAO
-WHERE 
-    Data_Devolucao >= CURRENT_DATE - INTERVAL '1 day'
-    AND Data_Devolucao < CURRENT_DATE;
+WHERE
+    Data_Retirada >= NOW() - INTERVAL '1 day'
 
---Criando uma tabela temporária para verificar os carros alugados no dia
-CREATE TEMP TABLE carros_do_dia AS
-SELECT DISTINCT
-    ID_VEICULO
-FROM public.RESERVA rsv
-WHERE rsv.ID_RESERVA IN (
-    SELECT ID_RESERVA
-    FROM locacoes_do_dia
-);
+--Criar uma tabela temporária para as reservas do dia.
+CREATE TEMP TABLE reservas_do_dia AS
+SELECT 
+    ID_RESERVA,
+    ID_VEICULO,
+    ID_PF,
+    Data_Inicio,
+    Data_Fim
+FROM public.RESERVA
+WHERE
+    Data_Inicio >= NOW() - INTERVAL '1 day'
 
 -- Criando uma tabela temporaria para armazenar os clientes PJs do dia 
 CREATE TEMP TABLE clientesPJ_do_dia AS
@@ -32,11 +33,10 @@ SELECT DISTINCT
     ID_PJ
 FROM public.PF PF 
 WHERE PF.ID_PF IN (
-    SELECT ID_PF
-    FROM locacoes_do_dia
+    SELECT ID_PF FROM reservas_do_dia
 );
 
--- Criando uma tabela tempooraria para armazenar os pátios visitados no ultimo dia 
+-- Criando uma tabela temporaria para armazenar os pátios visitados no ultimo dia 
 CREATE TEMP TABLE Patios_do_dia AS
 SELECT DISTINCT 
     ID_PATIO
@@ -147,7 +147,7 @@ SELECT
 FROM public.VEICULO vei
 WHERE vei.ID_VEICULO IN (
     SELECT ID_VEICULO
-    FROM carros_do_dia
+    FROM reservas_do_dia
 );
 
 -- Adicionando seguros ao Staging
@@ -195,7 +195,7 @@ SELECT
 FROM public.PF PF 
 WHERE PF.ID_PF IN(
     SELECT ID_PF
-    FROM locacoes_do_dia
+    FROM reservas_do_dia
 );
 
 -- Adicionando PJs ao Staging
@@ -266,5 +266,5 @@ SELECT
 FROM public.RESERVA RSV 
 WHERE RSV.ID_RESERVA IN(
     SELECT ID_RESERVA
-    FROM locacoes_do_dia
+    FROM reservas_do_dia
 );
