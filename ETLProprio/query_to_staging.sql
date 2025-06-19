@@ -57,7 +57,8 @@ INSERT INTO LOCACAO_Staging (
     ID_PF,
     ID_ESTADO_VEICULO_Retirada,
     ID_ESTADO_VEICULO_Devolucao,
-    ID_SEGUROS
+    ID_SEGUROS, 
+    ID_RESERVA
 )
 SELECT 
     ID_LOCACAO,
@@ -68,7 +69,8 @@ SELECT
     ID_PF,
     ID_ESTADO_VEICULO_Retirada,
     ID_ESTADO_VEICULO_Devolucao,
-    ID_SEGUROS
+    ID_SEGUROS,
+    ID_RESERVA
 FROM locacoes_do_dia;
 
 -- Selecionando as linhas de estado do veiculo que apareceram no ultimo dia e adicionando na tabela de staging

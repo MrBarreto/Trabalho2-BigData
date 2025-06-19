@@ -14,7 +14,7 @@ WHERE PJ_Staging.ID_PJ IN (
     SELECT ID_PJ
     FROM VEICULO_Staging
 )
-ON CONFLICT (ID_Pessoa) DO NOTHING;
+ON CONFLICT (ID_Empresa_Dona) DO NOTHING;
 
 INSERT INTO DimVeiculo (
     ID_VEICULO,
@@ -119,10 +119,31 @@ INSERT INTO DimPessoa (
 SELECT DISTINCT 
     PF.ID_PF, PF.Nome, PF.CPF, PF.CNH, 
     PF.Categoria_CNH, PF.Endereco, PF.Nacionalidade, PF.Data_Nascimento,
-    PF.Data_Expedicao_CNH, PJ.ID_Empresa, PJ.Nome_Empresa, PJ.CNPJ,
-    PJ.Endereco_Empresa
+    PF.Data_Expedicao_CNH, PJ.ID_PJ, PJ.Nome, PJ.CNPJ,
+    PJ.Endereco
 FROM PF_Staging PF
 LEFT JOIN PJ_Staging PJ ON PF.ID_PJ = PJ.ID_PJ
 ON CONFLICT (ID_Pessoa) DO NOTHING;
 
 -- Inserindo na Tabela FatoLocacao
+INSERT INTO FatoLocacao (
+    ID_LOCACAO,
+    Data_Retirada,
+    Data_Devolucao,
+    Vaga_Retirada,
+    Vaga_Devolucao,
+    ID_Pessoa,
+    ID_ESTADO_VEICULO_Retirada,
+    ID_ESTADO_VEICULO_Devolucao,
+    ID_SEGUROS,
+    ID_EMPRESA_Dona,
+    ID_VEICULO
+)
+SELECT DISTINCT
+    LOC.ID_LOCACAO, LOC.Data_Retirada, LOC.Data_Devolucao, LOC.Vaga_Retirada,
+    LOC.Vaga_Devolucao, LOC.ID_PF, LOC.ID_ESTADO_VEICULO_Retirada, LOC.ID_ESTADO_VEICULO_Devolucao,
+    LOC.ID_SEGUROS, VEC.ID_PJ, VEC.ID_VEICULO
+FROM LOCACAO_Staging LOC 
+JOIN RESERVA_Staging RSV ON LOC.ID_RESERVA = RSV.ID_RESERVA
+JOIN VEICULO_Staging VEC ON RSV.ID_VEICULO = VEC.ID_VEICULO
+ON CONFLICT (ID_LOCACAO) DO NOTHING;
