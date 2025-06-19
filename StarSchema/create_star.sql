@@ -1,12 +1,12 @@
 CREATE TABLE DimEmpresa_Dona (
-    ID_Empresa_Dona PRIMARY KEY,
+    ID_Empresa_Dona INT PRIMARY KEY,
     CNPJ_Empresa VARCHAR(18) UNIQUE NOT NULL,
     Nome_Empresa VARCHAR(255) NOT NULL,
     Endereco_Empresa VARCHAR(255)
 );
 
 CREATE TABLE DimVeiculo (
-    ID_VEICULO PRIMARY KEY,
+    ID_VEICULO INT PRIMARY KEY,
     Placa VARCHAR(10) UNIQUE NOT NULL,
     Chassi VARCHAR(17) UNIQUE NOT NULL,
     Grupo VARCHAR(50),
@@ -17,11 +17,11 @@ CREATE TABLE DimVeiculo (
     Crianca BOOLEAN DEFAULT FALSE,
     Bebe BOOLEAN DEFAULT FALSE,
     Teto_solar BOOLEAN DEFAULT FALSE,
-    Multimidia BOOLEAN DEFAULT FALSE,
+    Multimidia BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE DimEstado_Veiculo (
-    ID_ESTADO_VEICULO PRIMARY KEY,
+    ID_ESTADO_VEICULO INT PRIMARY KEY,
     Pressao_Pneu FLOAT,
     Nivel_Oleo VARCHAR(50),
     Gasolina VARCHAR(50),
@@ -39,7 +39,7 @@ CREATE TABLE DimEstado_Veiculo (
 );
 
 CREATE TABLE DimPessoa (
-    ID_Pessoa PRIMARY KEY,
+    ID_Pessoa INT PRIMARY KEY,
     Nome VARCHAR(255) NOT NULL,
     CPF VARCHAR(14) NOT NULL,
     CNH VARCHAR(20) NOT NULL,
@@ -55,14 +55,14 @@ CREATE TABLE DimPessoa (
 );
 
 CREATE TABLE DimSeguro (
-    ID_SEGUROS PRIMARY KEY,
+    ID_SEGUROS INT PRIMARY KEY,
     Vidros VARCHAR(255),
     Farois VARCHAR(255),
     Faixa_Indenizacao VARCHAR(100)
 );
 
 CREATE TABLE DimVaga (
-    ID_Vaga PRIMARY KEY,
+    ID_Vaga INT PRIMARY KEY,
     ID_PATIO INTEGER NOT NULL,
     Endereco_Patio VARCHAR(255) NOT NULL,
     ID_Empresa INT NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE DimVaga (
 );
 
 CREATE TABLE FatoLocacao (
-    ID_LOCACAO PRIMARY KEY,
+    ID_LOCACAO INT PRIMARY KEY,
     Data_Retirada DATE NOT NULL,
     Data_Devolucao DATE NOT NULL,
     Vaga_Retirada INT NOT NULL,
@@ -123,4 +123,20 @@ CREATE TABLE FatoLocacao (
         REFERENCES DimVeiculo(ID_VEICULO)
         ON DELETE RESTRICT
         ON UPDATE CASCADE
+);
+
+CREATE TABLE FatoReserva (
+    ID_RESERVA INT PRIMARY KEY,
+    ID_Pessoa INT NOT NULL,
+    ID_VEICULO INT NOT NULL,
+    ID_Vaga_Retirada INT NOT NULL,
+    Data_Retirada_Prevista DATE NOT NULL,
+    Data_Devolucao_Prevista DATE NOT NULL,
+
+    CONSTRAINT FK_Reserva_Pessoa FOREIGN KEY (ID_Pessoa)
+        REFERENCES DimPessoa(ID_Pessoa),
+    CONSTRAINT FK_Reserva_Veiculo FOREIGN KEY (ID_VEICULO)
+        REFERENCES DimVeiculo(ID_VEICULO),
+    CONSTRAINT FK_Reserva_Vaga FOREIGN KEY (ID_Vaga_Retirada)
+        REFERENCES DimVaga(ID_Vaga)
 );
