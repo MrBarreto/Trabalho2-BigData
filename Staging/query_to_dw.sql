@@ -154,13 +154,15 @@ INSERT INTO FatoLocacao (
     ID_RESERVA,
     ID_Pessoa,
     ID_VEICULO,
+    ID_Vaga_Retirada
     Data_Retirada_Prevista,
     Data_Devolucao_Prevista
 )
 SELECT DISTINCT
     ID_RESERVA,
     ID_PF,
-    ID_VEICULO, 
+    ID_VEICULO,
+    ID_Vaga_Retirada
     Data_Inicio,
     Data_Fim
 FROM RESERVA_Staging 

@@ -96,6 +96,7 @@ CREATE TABLE IF NOT EXISTS RESERVA_Staging (
     ID_RESERVA PRIMARY KEY,
     ID_VEICULO INT NOT NULL,
     ID_PF INT,
+    ID_Vaga_Retirada INT,
     ID_PJ INT,
     Data_Inicio DATE NOT NULL,
     Data_Fim DATE NOT NULL,
