@@ -112,7 +112,6 @@ SELECT
     -- Duração prevista da locação
     (FR.Data_Devolucao_Prevista - FR.Data_Retirada_Prevista) AS DuracaoPrevistaDias,
     -- Cidade de origem do cliente (inferida do Endereco_Pessoa)
-    -- Nota: Esta é uma simplificação. A extração de cidade de um campo de texto pode ser imprecisa.
     SPLIT_PART(DP.Endereco, ',', 2) AS CidadeOrigemCliente, -- Assumindo "Rua, Cidade, Estado"
     COUNT(FR.ID_RESERVA) AS QuantidadeReservas
 FROM
@@ -134,7 +133,6 @@ ORDER BY
 SELECT
     DV.Grupo,
     -- Cidade de origem do cliente para locações
-    -- Nota: Similar à consulta de reservas, a extração de cidade é uma simplificação.
     SPLIT_PART(DP.Endereco, ',', 2) AS CidadeOrigemCliente,
     COUNT(FL.ID_LOCACAO) AS TotalLocacoes
 FROM
@@ -147,3 +145,4 @@ GROUP BY
     DV.Grupo, CidadeOrigemCliente
 ORDER BY
     TotalLocacoes DESC, DV.Grupo;
+ 
