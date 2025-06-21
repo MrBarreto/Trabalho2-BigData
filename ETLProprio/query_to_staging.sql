@@ -1,3 +1,10 @@
+------------------------------------------------------------------
+--Alanna Figueiredo Simões (Mat. Aplic.) — 120053919
+-- Alexandre Belfort de Almeida Chiacchio (ECI) — 123116732
+-- Leon Barboza (Mat. Aplic.) — 121061020
+-- Sávio Barreto Teles da Silva (ECI) — 120037175
+-- William Petterle Pfaltzgraff (ECI) — 120021807
+------------------------------------------------------------------
 -- Criando uma tabela temporaria comm as locações do dia
 CREATE TEMP TABLE locacoes_do_dia AS
 SELECT 

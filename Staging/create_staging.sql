@@ -1,3 +1,12 @@
+------------------------------------------------------------------
+--Alanna Figueiredo Simões (Mat. Aplic.) — 120053919
+-- Alexandre Belfort de Almeida Chiacchio (ECI) — 123116732
+-- Leon Barboza (Mat. Aplic.) — 121061020
+-- Sávio Barreto Teles da Silva (ECI) — 120037175
+-- William Petterle Pfaltzgraff (ECI) — 120021807
+------------------------------------------------------------------
+
+
 CREATE TABLE IF NOT EXISTS PJ_Staging (
     ID_PJ PRIMARY KEY,
     CNPJ VARCHAR(18) UNIQUE NOT NULL,
