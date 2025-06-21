@@ -150,7 +150,7 @@ JOIN VEICULO_Staging VEC ON RSV.ID_VEICULO = VEC.ID_VEICULO
 ON CONFLICT (ID_LOCACAO) DO NOTHING;
 
 -- Inserindo na Tabela FatoReserva
-INSERT INTO FatoLocacao (
+INSERT INTO FatoReserva (
     ID_RESERVA,
     ID_Pessoa,
     ID_VEICULO,
