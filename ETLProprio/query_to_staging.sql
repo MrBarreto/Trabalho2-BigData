@@ -240,7 +240,7 @@ INSERT INTO PATIO_Staging (
 SELECT
     ID_PATIO,
     ID_PJ,
-    Endereco,
+    Endereco
 FROM public.PATIO PT 
 WHERE PT.ID_PATIO IN (
     SELECT ID_PATIO
@@ -254,15 +254,16 @@ INSERT INTO RESERVA_Staging (
     ID_PF,
     ID_PJ,
     Data_Inicio,
-    Data_Fim,
+    Data_Fim
 )
 SELECT 
     ID_RESERVA,
     ID_VEICULO,
     ID_PF,
+    NULL AS ID_Vaga_Retirada,
     ID_PJ,
     Data_Inicio,
-    Data_Fim,
+    Data_Fim
 FROM public.RESERVA RSV 
 WHERE RSV.ID_RESERVA IN(
     SELECT ID_RESERVA
