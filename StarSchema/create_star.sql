@@ -83,6 +83,7 @@ CREATE TABLE FatoLocacao (
     ID_SEGUROS INT,
     ID_EMPRESA_Dona INT NOT NULL,
     ID_VEICULO INT NOT NULL,
+    ID_RESERVA INT,
     
     CONSTRAINT FK_Locacao_Vaga_Retirada FOREIGN KEY (Vaga_Retirada)
         REFERENCES DimVaga(ID_Vaga)
